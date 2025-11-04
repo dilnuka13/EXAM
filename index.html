@@ -50,13 +50,13 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: #1e3a8a;
-            dark:color: #ffffff;
+            /* dark:color: #ffffff; (Handled by dark mode classes) */
         }
         .countdown-box p {
             font-size: 0.75rem;
             text-transform: uppercase;
             color: #4b5563;
-            dark:color: #d1d5db;
+            /* dark:color: #d1d5db; (Handled by dark mode classes) */
         }
 
         /* Hide pages by default */
@@ -103,6 +103,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 1rem; /* Added padding for small screens */
         }
         .modal-content {
             margin: auto;
@@ -151,7 +152,7 @@
             display: block;
         }
 
-        /* New Message Popup Style (Bottom Center) */
+        /* Message Popup Style (Bottom Center) */
         #message-popup {
             position: fixed;
             bottom: 20px; /* 5 * 4 = 20px */
@@ -169,6 +170,7 @@
     
     <!-- Tailwind Dark Mode Config -->
     <script>
+        // Set theme on initial load
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.documentElement.classList.add('dark')
         } else {
@@ -176,7 +178,7 @@
         }
     </script>
 </head>
-<body class="antiasialed bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
     <!-- Preloader -->
     <div id="preloader" class="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 transition-opacity duration-1000">
@@ -195,7 +197,6 @@
                 
                 <!-- Dark Mode Toggle -->
                 <div class="flex items-center">
-                    <!-- Removed inline onchange event -->
                     <input type="checkbox" class="toggle-checkbox hidden" id="dark-mode-toggle">
                     <label for="dark-mode-toggle" class="toggle-label cursor-pointer w-12 h-6 flex items-center bg-gray-300 dark:bg-gray-700 rounded-full p-1 transition-colors">
                         <div class="toggle-ball w-5 h-5 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform"></div>
@@ -298,8 +299,8 @@
             <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-xl card-shadow overflow-hidden">
                 <div id="admission-content" class="printable-content p-8 sm:p-12">
                     <div class="text-center mb-8 pb-6 border-b-2 border-blue-600">
-                        <h1 class_alias="text-4xl font-extrabold text-blue-700 dark:text-blue-300">DE Education.lk</h1>
-                        <p class_alias="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-2">Exam Admission Slip</p>
+                        <h1 class="text-4xl font-extrabold text-blue-700 dark:text-blue-300">DE Education.lk</h1>
+                        <p class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-2">Exam Admission Slip</p>
                     </div>
                     
                     <div id="admission-details" class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
@@ -352,7 +353,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="col-span-1 md:col-span-2">
                                     <label for="exam_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Exam Name</label>
-                                    <input type="text" id="exam_name" name="exam_name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                                    <input type="text" id="exam_name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                                 </div>
                                 <div>
                                     <label for="exam_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Exam Date</label>
@@ -448,7 +449,7 @@
                     <div id="tab-view-ranks" class="admin-tab-content bg-white dark:bg-gray-800 rounded-xl card-shadow p-6 sm:p-8">
                         <h3 class="text-2xl font-bold mb-6">View Exam Ranks & Leaderboards</h3>
                         <div class="mb-4">
-                            <label for="rank-exam-select-admin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Exam</to_view_ranks>
+                            <label for="rank-exam-select-admin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Exam</label>
                             <select id="rank-exam-select-admin" name="rank-exam-select-admin" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                                 <option value="">-- Select an Exam --</option>
                             </select>
@@ -490,7 +491,6 @@
                     </form>
                     
                     <!-- Leaderboard Buttons -->
-                    <!-- Removed 'flex gap-4' and the 'View All Ranks' button -->
                     <div class="mt-4">
                         <button onclick="handleViewLeaderboard('top10', 'public')" class="w-full bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300">
                             View Top 10
@@ -609,17 +609,17 @@
     <!-- Edit Exam Modal -->
     <div id="edit-exam-modal" class="modal">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl">
-            <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Edit Exam Details</h3>
+            <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Edit Exam</h3>
             <form id="edit-exam-form">
                 <input type="hidden" id="edit-exam-id">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="col-span-1 md:col-span-2">
                         <label for="edit_exam_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Exam Name</label>
-                        <input type="text" id="edit_exam_name" name="edit_exam_name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                        <input type="text" id="edit_exam_name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                     <div>
                         <label for="edit_exam_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Exam Date</label>
-                        <input type="date" id="edit_exam_date" name="edit_exam_date" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                        <input type="date" id="edit_exam_date" name="exam_date" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                     <div>
                         <label for="edit_exam_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Exam Time</label>
@@ -630,12 +630,12 @@
                         <input type="datetime-local" id="edit_reg_start_date" name="reg_start_date" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                     <div>
-                        <label for="edit_reg_end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Registration End</g_end_date>
+                        <label for="edit_reg_end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Registration End</label>
                         <input type="datetime-local" id="edit_reg_end_date" name="reg_end_date" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                     <div class="col-span-1 md:col-span-2">
                         <label for="edit_batch_year" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Batch</label>
-                        <input type="text" id="edit_batch_year" name="edit_batch_year" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                        <input type="text" id="edit_batch_year" name="batch_year" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
@@ -651,7 +651,7 @@
         <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="leaderboard-title" class="text-2xl font-bold text-gray-900 dark:text-gray-100">Exam Leaderboard</h3>
-                <button onclick="closeLeaderboardModal()" class="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400">&times;</button>
+                <button onclick="closeLeaderboardModal()" class="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 text-3xl font-bold">&times;</button>
             </div>
             <div id="leaderboard-content" class="overflow-y-auto max-h-[70vh]">
                 <!-- Leaderboard table will be injected here -->
@@ -695,10 +695,15 @@
             // Special actions when showing admin page
             if (pageId === 'admin') {
                 loadAdminData();
+                showAdminTab('create-exam'); // Default to create exam tab
             }
             // Special actions when showing results page
             if (pageId === 'results') {
                 loadPublishedExams();
+            }
+            // Special actions when showing home page
+            if (pageId === 'home') {
+                loadExams();
             }
         }
         window.showPage = showPage; // Make globally accessible
@@ -731,9 +736,11 @@
             
             // Auto-dismiss
             setTimeout(() => {
-                messageElement.style.opacity = '0';
-                messageElement.style.transform = 'translateY(10px)'; // Fade out upwards slightly
-                setTimeout(() => messageElement.remove(), 500);
+                if (messageElement) {
+                    messageElement.style.opacity = '0';
+                    messageElement.style.transform = 'translateY(10px)'; // Fade out upwards slightly
+                    setTimeout(() => messageElement.remove(), 500);
+                }
             }, 5000);
         }
         window.showMessage = showMessage;
@@ -778,6 +785,7 @@
                 el.classList.remove('dark:bg-gray-800', 'dark:text-gray-100', 'dark:text-gray-300', 'dark:text-blue-300', 'dark:border-gray-600', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:text-blue-400');
                 
                 // Force light mode styles
+                el.style.color = '#111827'; // Default text
                 if (el.tagName === 'H1') el.style.color = '#1d4ed8'; // blue-700
                 if (el.classList.contains('text-gray-800')) el.style.color = '#1f2937';
                 if (el.classList.contains('text-gray-700')) el.style.color = '#374151';
@@ -788,6 +796,8 @@
                 if (el.id === 'pdf-marks') el.style.color = '#2563eb'; // blue-600
                 if (el.id === 'pdf-rank') el.style.color = '#374151';
             });
+            contentClone.style.backgroundColor = '#ffffff';
+            contentClone.style.color = '#111827';
             
             // A4 size: 210mm wide. We'll use 190mm for content with 10mm margins
             const doc = new jsPDF({
@@ -809,13 +819,11 @@
         window.handlePrint = handlePrint;
 
         // --- Dark Mode ---
-        // Moved logic to DOMContentLoaded and fixed function query
         
         /**
          * Toggles dark mode class on <html> and saves to localStorage
          */
         function toggleDarkMode() {
-            // Query for the toggle *inside* the function so it's not null
             const darkModeToggle = document.getElementById('dark-mode-toggle');
             if (darkModeToggle.checked) {
                 document.documentElement.classList.add('dark');
@@ -825,8 +833,7 @@
                 localStorage.setItem('theme', 'light');
             }
         }
-        // No window.toggleDarkMode needed as it's attached via addEventListener
-
+        
         // --- Home Page (index.html) ---
 
         /**
@@ -953,13 +960,19 @@
 
             const interval = setInterval(() => {
                 const now = new Date().getTime();
-                const distance = targetDate - now;
+                const distance = targetDate.getTime() - now; // Use getTime()
 
                 if (distance < 0) {
                     clearInterval(interval);
-                    countdownElement.innerHTML = `<div class="bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 text-lg font-bold py-3 px-6 rounded-lg">Registration Open</div>`;
-                    // Reload exams to show the "Register Now" button
-                    setTimeout(loadExams, 1000);
+                    // Check if action-area exists before modifying
+                    const actionArea = document.getElementById(`action-area-${countdownElement.id.split('-')[1]}`);
+                    if (actionArea) {
+                         actionArea.innerHTML = `
+                            <button onclick="prepareRegistration(${countdownElement.id.split('-')[1]})" class="inline-block w-full bg-green-600 text-white text-lg font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition duration-300">
+                                Register Now
+                            </button>
+                        `;
+                    }
                     return;
                 }
 
@@ -1204,19 +1217,18 @@
             const form = e.target;
             const formData = new FormData(form);
             const examData = Object.fromEntries(formData.entries());
-
+            
             try {
-                const { data, error } = await supabase
+                const { error } = await supabase
                     .from('exams')
-                    .insert([examData])
-                    .select();
-
+                    .insert(examData);
+                
                 if (error) throw error;
-
+                
                 showMessage('Exam created successfully!', 'success');
                 form.reset();
                 loadAdminData(); // Refresh all admin data
-                showAdminTab('manage-exams'); // Switch to manage exams tab
+                loadExams(); // Refresh home page exams
             } catch (error) {
                 console.error('Error creating exam:', error.message);
                 showMessage('Error creating exam: ' + error.message, 'error');
@@ -1320,10 +1332,10 @@
             const form = e.target;
             const formData = new FormData(form);
             const examData = Object.fromEntries(formData.entries());
-            const examId = examData['edit-exam-id'];
+            const examId = document.getElementById('edit-exam-id').value; // Get ID from hidden field
             
             // Remove id from data to be updated
-            delete examData['edit-exam-id'];
+            // delete examData['edit-exam-id']; // This is not needed as the form fields don't include it
 
             try {
                 const { error } = await supabase
@@ -1336,6 +1348,7 @@
                 showMessage('Exam updated successfully!', 'success');
                 closeEditExamModal();
                 loadAdminData(); // Refresh exam list
+                loadExams(); // Refresh home page
             } catch (error) {
                 showMessage('Error updating exam: ' + error.message, 'error');
             }
@@ -1362,6 +1375,7 @@
                 
                 showMessage('Exam deleted successfully!', 'success');
                 loadAdminData(); // Refresh list
+                loadExams(); // Refresh home page
             } catch (error) {
                 console.error('Error deleting exam:', error.message);
                 showMessage('Error deleting exam: ' + error.message, 'error');
@@ -1389,7 +1403,7 @@
                 
                 // 2. Separate present students and sort them by marks (descending)
                 const presentStudents = results
-                    .filter(r => !r.is_absent)
+                    .filter(r => !r.is_absent && r.marks !== null) // Added marks null check
                     .sort((a, b) => b.marks - a.marks);
                     
                 // 3. Calculate ranks
@@ -1406,9 +1420,9 @@
                     });
                 }
                 
-                // 4. Set rank to null for absent students
-                const absentStudents = results.filter(r => r.is_absent);
-                absentStudents.forEach(student => {
+                // 4. Set rank to null for absent students or those with no marks
+                const otherStudents = results.filter(r => r.is_absent || r.marks === null);
+                otherStudents.forEach(student => {
                     updates.push({
                         id: student.id,
                         rank: null
@@ -1422,7 +1436,6 @@
                         .upsert(updates);
                     
                     if (updateError) throw updateError;
-                    console.log('Ranks updated:', updates);
                 }
 
                 // 6. Mark the exam as published
@@ -1485,7 +1498,6 @@
             
             try {
                 // Fetch registrations AND their results (use left join by removing '!inner')
-                // This shows all students, even those without a result entry
                 const { data, error } = await supabase
                     .from('registrations')
                     .select(`
@@ -1498,7 +1510,8 @@
                             is_absent
                         )
                     `)
-                    .eq('exam_id', examId);
+                    .eq('exam_id', examId)
+                    .order('student_name', { ascending: true }); // Order by name
                 
                 if (error) throw error;
                 
@@ -1714,7 +1727,8 @@
                 const { data, error } = await supabase
                     .from('registrations')
                     .select('*')
-                    .eq('exam_id', examId);
+                    .eq('exam_id', examId)
+                    .order('student_name', { ascending: true }); // Order by name
                 
                 if (error) throw error;
                 
@@ -1770,7 +1784,7 @@
                         <td class="p-3">${student.student_name}</td>
                         <td class="p-3">${student.index_number}</td>
                         <td class="p-3">${student.nic}</td>
-                        <td class="p-3">${student.email || 'N/A'}</td>
+                        <td classD="p-3">${student.email || 'N/A'}</td>
                         <td class="p-3">${student.phone || 'N/A'}</td>
                         <td class="p-3 flex gap-2 flex-wrap"> <!-- Added flex-wrap -->
                             <button onclick="openEditStudentModal(${student.id})" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit</button>
@@ -1848,12 +1862,22 @@
             e.preventDefault();
             const form = e.target;
             const formData = new FormData(form);
-            const studentData = Object.fromEntries(formData.entries());
-            const studentId = studentData['edit-student-id'];
+            let studentData = Object.fromEntries(formData.entries());
+            const studentId = document.getElementById('edit-student-id').value; // Get ID from hidden field
             
-            // Remove id from data to be updated
-            delete studentData['edit-student-id'];
+            // Clean up data
+            delete studentData['edit_student_name'];
+            delete studentData['edit_nic'];
+            delete studentData['edit_email'];
+            delete studentData['edit_phone'];
 
+            studentData = {
+                student_name: document.getElementById('edit_student_name').value,
+                nic: document.getElementById('edit_nic').value,
+                email: document.getElementById('edit_email').value,
+                phone: document.getElementById('edit_phone').value
+            };
+            
             try {
                 const { error } = await supabase
                     .from('registrations')
@@ -1877,7 +1901,6 @@
          */
         async function loadPublishedExams() {
             try {
-                // *** FIXED SYNTAX ERROR HERE *** (Removed the trailing '_')
                 const { data, error } = await supabase
                     .from('exams')
                     .select('id, name, batch_year')
@@ -1905,7 +1928,7 @@
          */
         function getGrade(marks, isAbsent) {
             if (isAbsent) return 'ab';
-            if (marks === null) return 'N/A';
+            if (marks === null || marks === undefined) return 'N/A';
             if (marks >= 75) return 'A';
             if (marks >= 65) return 'B';
             if (marks >= 55) return 'C';
@@ -1942,7 +1965,7 @@
                             name,
                             exam_date
                         ),
-                        result:results!inner (
+                        results!inner (
                             marks,
                             is_absent,
                             rank
@@ -1955,7 +1978,7 @@
 
                 if (error) {
                     if (error.code === 'PGRST116') { // No rows found
-                        throw new Error('Result not found. Please check your exam selection and index number.');
+                        throw new Error('Result not found. Please check your exam selection and index number, or the result may not be published.');
                     }
                     throw error;
                 }
@@ -1964,7 +1987,7 @@
                 const template = document.getElementById('result-pdf-template').innerHTML;
                 resultWrapper.innerHTML = template;
                 
-                const resultData = data.result[0]; // Result is an array
+                const resultData = data.results[0]; // Result is an array
                 
                 document.getElementById('pdf-exam-name').innerText = `${data.exam.name}`;
                 document.getElementById('pdf-exam-date').innerText = new Date(data.exam.exam_date).toLocaleDateString('en-US');
@@ -2033,7 +2056,6 @@
             modal.classList.add('active');
             
             try {
-                // Corrected query: changed 'registration:registrations!inner' to 'registrations:registrations!inner'
                 let query = supabase
                     .from('results')
                     .select(`
@@ -2075,11 +2097,12 @@
                 `;
                 
                 results.forEach(res => {
+                    // Check if registrations data is present
+                    const studentName = res.registrations ? res.registrations.student_name : 'Unknown Student';
                     tableHTML += `
                         <tr class="border-b dark:border-gray-700">
                             <td class="p-3 font-bold">${res.rank}</td>
-                            <!-- Corrected access: from res.registration to res.registrations -->
-                            <td class="p-3">${res.registrations.student_name}</td>
+                            <td class="p-3">${studentName}</td>
                             <td class="p-3">${res.marks}%</td>
                         </tr>
                     `;
@@ -2128,7 +2151,7 @@
 
             const tableBody = results.map(res => [
                 res.rank,
-                res.registrations.student_name, // Corrected access
+                res.registrations ? res.registrations.student_name : 'Unknown', // Safety check
                 `${res.marks}%`
             ]);
 
@@ -2147,11 +2170,10 @@
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
             // Page navigation
-            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            document.querySelectorAll('nav a[href="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    const pageId = this.getAttribute('href').substring(1);
-                    if(pageId) showPage(pageId);
+                    // This is handled by inline onclick, but good as a fallback
                 });
             });
             
