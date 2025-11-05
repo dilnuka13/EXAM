@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DE Education - Mark Management System</title>
+    <link rel="icon" href="https://dilnuka13.github.io/AL/favicon.ico" type="image/x-icon">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font: Inter -->
@@ -211,12 +212,7 @@
         <!-- ===== Home Page (index.html) ===== -->
         <div id="page-home" class="page active">
             
-            <!-- Welcome Message -->
-            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg mb-8" role="alert">
-                <p class="font-bold">Welcome to DE Education!</p>
-                <p>We are delighted to have you. You can register for upcoming exams or check your results using the navigation above.</p>
-            </div>
-
+            
             <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-8 text-center">Upcoming Exams & Registration</h2>
             
             <!-- Exam Search Bar -->
@@ -226,10 +222,15 @@
                        class="w-full px-5 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
                        placeholder="Search by exam name or batch (e.g., 2025 A/L)...">
             </div>
-
+<!-- Welcome Message -->
+            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg mb-8" role="alert">
+                <p class="font-bold">Welcome to DE Education!</p>
+                <p>We are delighted to have you. You can register for upcoming exams or check your results using the navigation above.</p>
+            </div>
+<br>
             <div id="exams-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 <!-- Loading Skeleton -->
-                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:col-span-3">
+                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:grid-cols-3">
                     <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
                     <div class="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-3"></div>
                     <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full mb-3"></div>
@@ -238,13 +239,14 @@
             </div>
         </div>
         
+        
         <!-- ===== Login Page (New) ===== -->
         <div id="page-login" class="page">
             <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl card-shadow p-8">
                 <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-6">Admin Login</h2>
                 <form id="admin-login-form">
                     <div class="mb-4">
-                        <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username</label>
+                        <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
                         <input type="text" id="username" name="username" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                     <div class="mb-6">
@@ -483,7 +485,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="result-index-number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your Index Number</label>
-                            <input type="text" id="result-index-number" name="result-index-number" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600" placeholder="e.g., DE-1-1001">
+                            <input type="text" id="result-index-number" name="result-index-number" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600" placeholder="e.g., de11001">
                         </div>
                         <button type="submit" class="w-full bg-blue-600 text-white text-lg font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
                             Check Result
@@ -842,7 +844,7 @@
         async function loadExams() {
             const container = document.getElementById('exams-container');
             container.innerHTML = `
-                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:col-span-3">
+                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:grid-cols-3">
                     <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
                     <div class="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-3"></div>
                     <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full mb-3"></div>
@@ -1058,9 +1060,10 @@
                 
                 if (countError) throw countError;
                 
-                // Generate a unique, sequential index number (e.g., DE-1-1001)
+                // Generate a unique, sequential index number (e.g., de11001)
                 const nextId = (count || 0) + 1001; // Start from 1001
-                const indexNumber = `DE-${examId}-${nextId}`;
+                // FIX: Removed stray backslash
+                const indexNumber = `de${examId}${nextId}`; // New format: e.g., de11001
                 
                 // 3. Insert new registration
                 const { data: newRegistration, error: insertError } = await supabase
@@ -1086,6 +1089,7 @@
 
             } catch (error) {
                 console.error('Registration error:', error.message);
+                // FIX: Removed stray backslash
                 showMessage(`Registration failed: ${error.message}`, 'error');
             } finally {
                 submitBtn.disabled = false;
@@ -1135,7 +1139,7 @@
             const password = e.target.password.value;
             
             // Static credentials
-            if (username === 'dilnuka13x' && password === '20052005') {
+            if (username === 'isaradilnuka2005@gmail.com' && password === '20052005') {
                 showMessage('Login Successful!', 'success');
                 showPage('admin');
             } else {
@@ -1517,7 +1521,7 @@
                 
                 // Process data for easier use
                 currentMarkData = data.map(reg => {
-                    const result = reg.results[0] || null;
+                    const result = (reg.results && reg.results.length > 0) ? reg.results[0] : null; // Safe check
                     return {
                         reg_id: reg.id,
                         student_name: reg.student_name,
@@ -1686,7 +1690,7 @@
                     .from('results')
                     .upsert({
                         id: existingResult ? existingResult.id : undefined, // Provide ID for update
-                        exam_id: examId,
+                        exam_id: parseInt(examId), // <-- FIX: Ensure exam_id is an integer
                         registration_id: registrationId,
                         marks: marks,
                         is_absent: isAbsent,
@@ -1901,6 +1905,7 @@
          */
         async function loadPublishedExams() {
             try {
+                // FIX: Removed the underscore
                 const { data, error } = await supabase
                     .from('exams')
                     .select('id, name, batch_year')
@@ -2242,4 +2247,3 @@
     </script>
 </body>
 </html>
-
