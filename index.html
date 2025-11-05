@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DE Education - Mark Management System</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://dilnuka13.github.io/AL/favicon.ico" type="image/x-icon">
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- jsPDF for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <!-- QR Code Library (minimal) -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <!-- HTML5-QR-Code Library for Scanning -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
 
     <style>
         body {
@@ -182,6 +189,7 @@
         }
     </style>
     
+    <!-- Tailwind Dark Mode Config -->
     <script>
         // Set theme on initial load
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -193,18 +201,22 @@
 </head>
 <body class="antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
+    <!-- Preloader -->
     <div id="preloader" class="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 transition-opacity duration-1000">
         <div class="loader-gradient w-16 h-16 animate-spin rounded-full"></div>
         <p class="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300">Loading DE Education.lk...</p>
     </div>
 
+    <!-- Header -->
     <header class="header-gradient text-white p-6 shadow-md no-print sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
+            <!-- Changed this link to navigate home -->
             <a href="#" onclick="event.preventDefault(); showPage('home');" class="text-3xl font-bold text-white cursor-pointer">DE Education.lk</a>
             <nav class="flex items-center gap-4">
                 <a href="#" onclick="event.preventDefault(); showPage('home');" class="text-white hover:text-gray-200 px-3 py-2 rounded-md font-medium hidden sm:block">Home</a>
                 <a href="#" onclick="event.preventDefault(); showPage('results');" class="text-white hover:text-gray-200 px-3 py-2 rounded-md font-medium">Check Results</a>
                 
+                <!-- Dark Mode Toggle -->
                 <div class="flex items-center">
                     <input type="checkbox" class="toggle-checkbox hidden" id="dark-mode-toggle">
                     <label for="dark-mode-toggle" class="toggle-label cursor-pointer w-12 h-6 flex items-center bg-gray-300 dark:bg-gray-700 rounded-full p-1 transition-colors">
@@ -217,23 +229,27 @@
 
     <main class="container mx-auto p-4 sm:p-6 mt-8">
 
+        <!-- ===== Home Page (index.html) ===== -->
         <div id="page-home" class="page active">
             
             
             <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-8 text-center">Upcoming Exams & Registration</h2>
             
+            <!-- Exam Search Bar -->
             <div class="mb-8 max-w-2xl mx-auto">
                 <label for="exam-search-input" class="sr-only">Search Exams</label>
                 <input type="text" id="exam-search-input" onkeyup="handleExamSearch()" 
                        class="w-full px-5 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
                        placeholder="Search by exam name or batch (e.g., 2025 A/L)...">
             </div>
-<div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg mb-8" role="alert">
+<!-- Welcome Message -->
+            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg mb-8" role="alert">
                 <p class="font-bold">Welcome to DE Education!</p>
                 <p>We are delighted to have you. You can register for upcoming exams or check your results using the navigation above.</p>
             </div>
 <br>
             <div id="exams-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Loading Skeleton -->
                 <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:col-span-3">
                     <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
                     <div class="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-3"></div>
@@ -244,6 +260,7 @@
         </div>
         
         
+        <!-- ===== Login Page (New) ===== -->
         <div id="page-login" class="page">
             <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl card-shadow p-8">
                 <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-6">Admin Login</h2>
@@ -263,11 +280,13 @@
             </div>
         </div>
 
+        <!-- ===== Registration Page (registration.html) ===== -->
         <div id="page-registration" class="page">
             <div class="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-xl card-shadow p-8 sm:p-10">
                 <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-2">Exam Registration</h2>
                 <p id="reg-exam-title" class="text-center text-gray-600 dark:text-gray-300 mb-6 text-lg font-medium"></p>
                 <form id="registration-form">
+                    <!-- Hidden input to store exam_id -->
                     <input type="hidden" id="reg_exam_id" name="reg_exam_id">
                     
                     <div class="mb-4">
@@ -296,6 +315,7 @@
             </div>
         </div>
 
+        <!-- ===== Admission Page (admissionpdf.html) ===== -->
         <div id="page-admission" class="page">
             <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Your Exam Admission</h2>
             <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-xl card-shadow overflow-hidden">
@@ -306,11 +326,15 @@
                     </div>
                     
                     <div id="admission-details" class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-                        </div>
+                        <!-- Details will be injected here -->
+                    </div>
 
-                    <div class="flex justify-center mt-8">
+                    <div class="flex justify-center flex-col items-center mt-8">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">Verification QR Code</h4>
                         <div id="admission-qr-code-container" class="border border-gray-300 p-2 rounded-lg bg-white dark:bg-gray-900">
-                            </div>
+                            <!-- QR Code will be injected here -->
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Scan this code for quick check-in.</p>
                     </div>
                     
                     <div class="mt-8 pt-8 border-t border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
@@ -328,18 +352,20 @@
                     <button onclick="handlePrint('admission-content', 'DE_Education_Admission')" class="bg-blue-600 text-white text-lg font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
                         Download Admission PDF
                     </button>
-                    <button onclick="showPage('home')" class="bg-gray-500 text-white text-lg font-bold py-3 px-8 rounded-lg shadow-md hover:bg-gray-600 transition duration-300 mt-3 sm:mt-0 sm:ml-4">
+                    <button onclick="showPage('home')" class="w-full sm:w-auto bg-gray-500 text-white text-lg font-bold py-3 px-8 rounded-lg shadow-md hover:bg-gray-600 transition duration-300 mt-3 sm:mt-0 sm:ml-4">
                         Back to Home
                     </button>
                 </div>
             </div>
         </div>
 
+        <!-- ===== Admin Page (admin.html) ===== -->
         <div id="page-admin" class="page">
             <h2 class="text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-3 text-center">Admin Dashboard</h2>
             <p id="admin-welcome-msg" class="text-center text-xl font-semibold text-blue-600 dark:text-blue-400 mb-8"></p>
             
             <div class="flex flex-col md:flex-row gap-6">
+                <!-- Admin Navigation -->
                 <nav id="admin-nav" class="flex md:flex-col md:w-1/4 lg:w-1/5 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-1 md:space-y-2 overflow-x-auto">
                     <a href="#" data-tab="create-exam" class="admin-nav-link active-tab flex-shrink-0 text-left px-4 py-3 font-medium rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Create Exam</a>
                     <a href="#" data-tab="manage-exams" class="admin-nav-link flex-shrink-0 text-left px-4 py-3 font-medium rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Manage Exams</a>
@@ -349,8 +375,10 @@
                     <a href="#" data-tab="view-ranks" class="admin-nav-link flex-shrink-0 text-left px-4 py-3 font-medium rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">View Ranks</a>
                 </nav>
 
+                <!-- Admin Content Area -->
                 <div class="flex-1 md:w-3/4 lg:w-4/5">
                     
+                    <!-- Tab: Create Exam -->
                     <div id="tab-create-exam" class="admin-tab-content active bg-white dark:bg-gray-800 rounded-xl card-shadow p-6 sm:p-8">
                         <h3 class="text-2xl font-bold mb-6">Create New Exam</h3>
                         <form id="create-exam-form">
@@ -386,39 +414,50 @@
                         </form>
                     </div>
 
+                    <!-- Tab: Manage Exams -->
                     <div id="tab-manage-exams" class="admin-tab-content bg-white dark:bg-gray-800 rounded-xl card-shadow p-6 sm:p-8">
                         <h3 class="text-2xl font-bold mb-6">Manage Existing Exams</h3>
                         <div id="manage-exams-list" class="overflow-x-auto">
+                            <!-- Exam list will be loaded here -->
                             <p class="text-gray-600 dark:text-gray-400">Loading exams...</p>
                         </div>
                     </div>
 
+                    <!-- Tab: Student Check-in (New Feature) -->
                     <div id="tab-check-in" class="admin-tab-content bg-white dark:bg-gray-800 rounded-xl card-shadow p-6 sm:p-8">
                         <h3 class="text-2xl font-bold mb-6">Student Exam Check-in (Attendance)</h3>
                         <div class="mb-4">
                             <label for="check-in-exam-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Exam</label>
-                            <select id="check-in-exam-select" name="check-in-exam-select" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                            <select id="check-in-exam-select" name="check-in-exam-select" onchange="startScanner(this.value)" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                                 <option value="">-- Select an Exam --</option>
                             </select>
                         </div>
 
-                        <div class="text-center bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg mb-4 dark:bg-yellow-900 dark:text-yellow-200" role="alert">
-                            <p class="font-bold">Important:</p>
-                            <p>Attendance can be marked by Index Number or by scanning the QR code on the Admission Slip (Scanner not fully functional in this mockup).</p>
+                        <div class="mb-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
+                            <h4 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">1. QR Code Scan (Use Device Camera)</h4>
+                            <div id="reader" class="w-full h-auto max-w-sm mx-auto rounded-lg overflow-hidden border-2 border-dashed border-blue-400">
+                                <p id="scanner-message" class="text-center text-sm p-4 text-gray-500 dark:text-gray-400">Please select an exam to start the camera.</p>
+                                <!-- QR Scanner will render here -->
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button type="button" id="stop-scanner-btn" onclick="stopScanner()" class="bg-gray-500 text-white text-sm font-bold py-2 px-4 rounded-lg shadow-md hover:bg-gray-600 transition duration-300 hidden">Stop Scanner</button>
+                            </div>
                         </div>
 
-                        <form id="check-in-form">
+                        <form id="check-in-form" class="mt-8">
+                            <h4 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">2. Manual Check-in (or Scan Fallback)</h4>
                             <div class="mb-4">
-                                <label for="check_in_index_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Enter Index Number or Scan QR</label>
-                                <input type="text" id="check_in_index_number" name="check_in_index_number" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600" placeholder="DE-1-1001 or Scan">
+                                <label for="check_in_index_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Enter Index Number or NIC</label>
+                                <input type="text" id="check_in_index_number" name="check_in_index_number" required class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600" placeholder="DE-1-1001 or 2005123456V">
                             </div>
-                            <button type="submit" id="check-in-submit-btn" class="w-full mt-4 bg-purple-600 text-white text-lg font-bold py-3 px-6 rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
+                            <button type="submit" id="check-in-submit-btn" class="w-full mt-2 bg-purple-600 text-white text-lg font-bold py-3 px-6 rounded-lg shadow-md hover:bg-purple-700 transition duration-300">
                                 Mark as Present / Check-in
                             </button>
                         </form>
                         <div id="check-in-status" class="mt-6 p-4 rounded-lg text-center font-medium hidden"></div>
                     </div>
                     
+                    <!-- Tab: Manage Marks -->
                     <div id="tab-manage-marks" class="admin-tab-content bg-white dark:bg-gray-800 rounded-xl card-shadow p-6 sm:p-8">
                         <h3 class="text-2xl font-bold mb-6">Add / Update Student Marks</h3>
                         <div class="mb-4">
@@ -448,10 +487,13 @@
                             </button>
                         </form>
                         
+                        <!-- List of students for this exam -->
                         <div id="mark-student-list" class="mt-8 overflow-x-auto">
-                            </div>
+                            <!-- Student marks list will load here -->
+                        </div>
                     </div>
                     
+                    <!-- Tab: Manage Students -->
                     <div id="tab-manage-students" class="admin-tab-content bg-white dark:bg-gray-800 rounded-xl card-shadow p-6 sm:p-8">
                         <h3 class="text-2xl font-bold mb-6">Manage Student Registrations</h3>
                         <div class="mb-4">
@@ -464,10 +506,12 @@
                             <input type="text" id="student-search-input" onkeyup="handleStudentSearch()" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600" placeholder="Search by name, NIC, email, or index...">
                         </div>
                         <div id="student-management-list" class="overflow-x-auto">
+                            <!-- Student list will load here -->
                             <p class="text-gray-600 dark:text-gray-400">Select an exam to see registered students.</p>
                         </div>
                     </div>
 
+                    <!-- Tab: View Ranks -->
                     <div id="tab-view-ranks" class="admin-tab-content bg-white dark:bg-gray-800 rounded-xl card-shadow p-6 sm:p-8">
                         <h3 class="text-2xl font-bold mb-6">View Exam Ranks & Leaderboards</h3>
                         <div class="mb-4">
@@ -490,6 +534,7 @@
             </div>
         </div>
 
+        <!-- ===== Results Page (result.html) ===== -->
         <div id="page-results" class="page">
             <div class="max-w-2xl mx-auto">
                 <div class="bg-white dark:bg-gray-800 rounded-xl card-shadow p-8 sm:p-10 mb-8">
@@ -499,7 +544,8 @@
                             <label for="result-exam-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Exam</label>
                             <select id="result-exam-select" name="result-exam-select" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                                 <option value="">-- Select an Exam --</option>
-                                </select>
+                                <!-- Published exams will be loaded here -->
+                            </select>
                         </div>
                         <div class="mb-4">
                             <label for="result-index-number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your Index Number</label>
@@ -510,6 +556,7 @@
                         </button>
                     </form>
                     
+                    <!-- Leaderboard Buttons -->
                     <div class="mt-4">
                         <button onclick="handleViewLeaderboard('top10', 'public')" class="w-full bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300">
                             View Top 10
@@ -517,11 +564,15 @@
                     </div>
                 </div>
                 
+                <!-- Result Display Area -->
                 <div id="result-display-wrapper">
-                    </div>
+                    <!-- Result PDF content will be injected here -->
+                </div>
             </div>
         </div>
         
+        <!-- ===== Result PDF Page (resultpdf.html) ===== -->
+        <!-- This is now a template, it will be populated dynamically -->
         <div id="result-pdf-template" class="hidden">
             <div class="bg-white dark:bg-gray-800 rounded-xl card-shadow overflow-hidden">
                 <div id="result-content" class="printable-content p-8 sm:p-12">
@@ -530,6 +581,7 @@
                         <p class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-2">Official Result Slip</p>
                     </div>
                     
+                    <!-- Exam & Student Details -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-8">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Exam Details</h3>
@@ -543,6 +595,7 @@
                         </div>
                     </div>
                     
+                    <!-- Result Summary -->
                     <div class="text-center bg-gray-50 dark:bg-gray-700 rounded-lg p-8">
                         <p class="text-lg font-medium text-gray-600 dark:text-gray-300">Your Result</p>
                         <p id="pdf-marks" class="text-7xl font-extrabold text-blue-600 dark:text-blue-400 my-2"></p>
@@ -560,6 +613,7 @@
 
     </main>
 
+    <!-- Footer -->
     <footer class="text-center p-8 mt-12 bg-gray-800 text-gray-400 no-print">
         <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
             <div>
@@ -577,14 +631,18 @@
                 <p><a href="#" onclick="event.preventDefault(); showPage('login');" class="hover:text-white transition-colors">Admin Panel</a></p>
             </div>
         </div>
+        <!-- Updated footer link -->
         <p class="mt-8 border-t border-gray-700 pt-6 text-xs">
             <a href="https://dilnuka13.github.io/AL/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">&copy; 2025 DE Education.lk</a> | All Rights Reserved.
         </p>
     </footer>
 
+    <!-- Global Message Popup (Bottom Center) -->
     <div id="message-popup" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[1001] flex flex-col-reverse items-center gap-3 w-11/12 max-w-lg">
-        </div>
+        <!-- Messages will be injected here -->
+    </div>
     
+    <!-- Edit Student Modal -->
     <div id="edit-student-modal" class="modal">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl">
             <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Edit Student Information</h3>
@@ -614,6 +672,7 @@
         </div>
     </div>
     
+    <!-- Edit Exam Modal -->
     <div id="edit-exam-modal" class="modal">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl">
             <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Edit Exam</h3>
@@ -653,6 +712,7 @@
         </div>
     </div>
     
+    <!-- Leaderboard Modal -->
     <div id="leaderboard-modal" class="modal">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl">
             <div class="flex justify-between items-center mb-4">
@@ -660,7 +720,8 @@
                 <button onclick="closeLeaderboardModal()" class="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 text-3xl font-bold">&times;</button>
             </div>
             <div id="leaderboard-content" class="overflow-y-auto max-h-[70vh]">
-                </div>
+                <!-- Leaderboard table will be injected here -->
+            </div>
             <div class="text-right mt-6 no-print">
                 <button id="download-leaderboard-pdf" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
                     Download as PDF
@@ -680,7 +741,8 @@
         let currentExamData = {}; // To store loaded exams
         let currentStudentData = []; // To store students for management
         let currentMarkData = []; // To store marks for management
-        
+        let html5QrCode = null; // Global variable for QR code scanner instance
+
         // --- Core Functions ---
 
         /**
@@ -688,6 +750,11 @@
          * @param {string} pageId - The ID of the page to show
          */
         function showPage(pageId) {
+            // Stop scanner if navigating away from check-in page
+            if (pageId !== 'check-in') {
+                stopScanner();
+            }
+
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
@@ -714,10 +781,6 @@
             // Special actions when showing home page
             if (pageId === 'home') {
                 loadExams();
-            }
-            // Special actions for check-in page
-            if (pageId === 'check-in') {
-                loadCheckInExams();
             }
         }
         window.showPage = showPage; // Make globally accessible
@@ -857,14 +920,17 @@
         function generateQRCode(text, elementId) {
             const container = document.getElementById(elementId);
             container.innerHTML = ''; // Clear previous QR
+            
+            // Use the QR Code library to draw the canvas
             window.QRCode.toCanvas(container, text, {
                 width: 120, // Small size for admission slip
                 color: {
                     dark: '#000000',
                     light: '#ffffff'
-                }
+                },
+                errorCorrectionLevel: 'H'
             }, function (error) {
-                if (error) console.error(error);
+                if (error) console.error("QR Code Generation Error:", error);
             });
         }
         window.generateQRCode = generateQRCode;
@@ -962,7 +1028,8 @@
                         <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm"><span class="font-semibold">Registration:</span> ${regStart.toLocaleDateString('en-US')} to ${regEnd.toLocaleDateString('en-US')}</p>
                     </div>
                     <div class="mt-4 text-center" id="action-area-${exam.id}">
-                        </div>
+                        <!-- Action button or countdown -->
+                    </div>
                 `;
                 examCard.innerHTML = content;
                 container.appendChild(examCard);
@@ -1225,6 +1292,11 @@
          * @param {string} tabId - The ID of the tab to show
          */
         function showAdminTab(tabId) {
+            // Stop scanner if navigating away from check-in tab
+            if (tabId !== 'check-in') {
+                stopScanner();
+            }
+
             // Update content
             document.querySelectorAll('.admin-tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -1263,14 +1335,19 @@
                     document.getElementById('mark-exam-select'),
                     document.getElementById('student-exam-select'),
                     document.getElementById('rank-exam-select-admin'),
-                    document.getElementById('check-in-exam-select') // NEW: Check-in select
+                    document.getElementById('check-in-exam-select')
                 ];
                 
                 selects.forEach(select => {
+                    const selectedValue = select.value;
                     select.innerHTML = '<option value="">-- Select an Exam --</option>'; // Reset
                     exams.forEach(exam => {
                         select.innerHTML += `<option value="${exam.id}">${exam.name} (${exam.batch_year})</option>`;
                     });
+                     // Restore selection if applicable
+                    if (selectedValue) {
+                        select.value = selectedValue;
+                    }
                 });
                 
                 // Populate the "Manage Exams" list
@@ -1351,7 +1428,8 @@
                                 ${exam.is_published ? 'Published' : 'Pending'}
                             </span>
                         </td>
-                        <td class="p-3 flex gap-2 flex-wrap"> <button onclick="openEditExamModal(${exam.id})" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit</button>
+                        <td class="p-3 flex gap-2 flex-wrap"> <!-- Added flex-wrap -->
+                            <button onclick="openEditExamModal(${exam.id})" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit</button>
                             <button onclick="handlePublishResults(${exam.id})" class="text-sm bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md shadow-sm">${exam.is_published ? 'Republish' : 'Publish'}</button>
                             ${exam.is_published ? `<button onclick="handleUnpublishResults(${exam.id})" class="text-sm bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md shadow-sm">Unpublish</button>` : ''}
                             <button onclick="handleDeleteExam(${exam.id})" class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md shadow-sm">Delete</button>
@@ -1488,34 +1566,47 @@
                 const studentsForRanking = regs
                     .filter(reg => {
                         const result = reg.results[0];
-                        // Auto-create a result if none exists, marking as absent if not present
-                        if (!result) {
+                        
+                        // If result exists but is not eligible for ranking, prepare to reset rank to null
+                        if (result) {
+                            const eligible = result.marks !== null && result.is_absent === false;
+                            
+                            if (!eligible) {
+                                // Clear rank for absent/pending marks results
+                                resultsToUpsert.push({
+                                    id: result.id,
+                                    registration_id: reg.id,
+                                    marks: result.marks,
+                                    is_absent: result.is_absent,
+                                    rank: null 
+                                });
+                                return false; // Not eligible for ranking
+                            }
+                             // Eligible for ranking
+                            return true;
+                        }
+
+                        // If no result entry exists, create one and mark as Absent if not Present
+                        if (!reg.is_present) {
+                            // Automatically mark absent if no result is entered AND the student was not checked-in
                             resultsToUpsert.push({
                                 registration_id: reg.id,
                                 marks: null,
-                                is_absent: !reg.is_present, // Absent if not checked-in
+                                is_absent: true,
                                 rank: null
                             });
-                            return false; // Not eligible for ranking yet
-                        }
-                        
-                        // Students are eligible for ranking if they have marks and are not absent
-                        const eligible = result.marks !== null && result.is_absent === false;
-                        
-                        // If result exists but is absent/null marks, prepare to reset rank to null
-                        if (!eligible) {
+                        } else {
+                            // If present but no marks, mark as pending result (is_absent=false, marks=null)
                              resultsToUpsert.push({
-                                id: result.id,
                                 registration_id: reg.id,
-                                marks: result.marks,
-                                is_absent: result.is_absent,
-                                rank: null // Clear rank
+                                marks: null,
+                                is_absent: false,
+                                rank: null
                             });
                         }
-
-                        return eligible;
+                        return false; // Not eligible for ranking yet
                     })
-                    // Map to simpler object for sorting
+                    // Map eligible students to simpler object for sorting
                     .map(reg => ({
                         reg_id: reg.id,
                         result_id: reg.results[0].id,
@@ -1558,7 +1649,7 @@
                 
                 if (publishError) throw publishError;
                 
-                showMessage('Results published and ranks calculated successfully!', 'success');
+                showMessage('Results published and ranks calculated successfully! Absent students are marked as Absent/No Rank.', 'success');
                 loadAdminData(); // Refresh list
             } catch (error) {
                 console.error('Error publishing results:', error.message);
@@ -1592,14 +1683,120 @@
         }
         window.handleUnpublishResults = handleUnpublishResults;
 
-        // --- Admin: Student Check-in ---
+        // --- Admin: Student Check-in (QR Scanner Logic) ---
 
         /**
-         * Loads exams for the Check-in select dropdown
+         * Stops the QR code scanner if it's running.
          */
-        async function loadCheckInExams() {
-            // This is handled by loadAdminData() which is called on page-admin activation
+        function stopScanner() {
+            const readerDiv = document.getElementById('reader');
+            const scannerMsg = document.getElementById('scanner-message');
+            const stopBtn = document.getElementById('stop-scanner-btn');
+
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    console.log("QR Code scanner stopped.");
+                    if (scannerMsg) scannerMsg.innerText = "Scanner stopped.";
+                    if (stopBtn) stopBtn.classList.add('hidden');
+                }).catch(err => {
+                    console.error("Error stopping QR scanner:", err);
+                    if (scannerMsg) scannerMsg.innerText = "Error stopping scanner.";
+                });
+            }
+            // Clear the reader element content
+            if (readerDiv) readerDiv.innerHTML = '<p id="scanner-message" class="text-center text-sm p-4 text-gray-500 dark:text-gray-400">Please select an exam to start the camera.</p>';
         }
+        window.stopScanner = stopScanner;
+
+
+        /**
+         * Starts the QR code scanner for the selected exam.
+         * @param {string} examId - The ID of the selected exam
+         */
+        async function startScanner(examId) {
+            stopScanner(); // Stop any running scanner first
+            const readerDiv = document.getElementById('reader');
+            const scannerMsg = document.getElementById('scanner-message');
+            const stopBtn = document.getElementById('stop-scanner-btn');
+            
+            if (!examId) {
+                readerDiv.innerHTML = '<p id="scanner-message" class="text-center text-sm p-4 text-gray-500 dark:text-gray-400">Please select an exam to start the camera.</p>';
+                return;
+            }
+
+            // Initialize scanner instance
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("reader");
+            }
+            
+            // Success handler for scan
+            const onScanSuccess = (decodedText, decodedResult) => {
+                // Ignore empty or invalid scans
+                if (!decodedText || decodedText.length < 5) return; 
+
+                // Use the scanned text as the index number
+                document.getElementById('check_in_index_number').value = decodedText.trim();
+                
+                // Automatically attempt check-in 
+                html5QrCode.pause(); // Pause camera temporarily
+                handleCheckIn({ 
+                    preventDefault: () => {}, // Mock event
+                    target: document.getElementById('check-in-form')
+                }).finally(() => {
+                    // Resume scanning after check-in attempt
+                    if (html5QrCode && html5QrCode.isScanning) {
+                        html5QrCode.resume(); 
+                    }
+                });
+            };
+
+            // Configuration for the scanner
+            const config = {
+                fps: 10,
+                qrbox: { width: 150, height: 150 },
+                aspectRatio: 1.0,
+                disableFlip: false 
+            };
+            
+            try {
+                // Use the back camera if available, otherwise default camera
+                const devices = await Html5Qrcode.getCameras();
+                let cameraId = devices.length > 0 ? devices[0].id : null; 
+
+                if (devices.length > 1) {
+                    // Try to pick the back camera (ideal for mobile scanning)
+                    const backCamera = devices.find(device => device.label.toLowerCase().includes('back') || device.label.toLowerCase().includes('rear'));
+                    if (backCamera) {
+                        cameraId = backCamera.id;
+                    }
+                }
+
+                if (!cameraId) {
+                    throw new Error("No camera found on this device.");
+                }
+
+                scannerMsg.innerText = "Camera starting...";
+                await html5QrCode.start(
+                    cameraId, 
+                    config, 
+                    onScanSuccess, 
+                    (errorMessage) => { 
+                        // console.warn("QR Scan error: ", errorMessage);
+                        // Do not show errors constantly
+                    }
+                );
+                
+                readerDiv.classList.remove('border-dashed');
+                if (stopBtn) stopBtn.classList.remove('hidden');
+                scannerMsg.innerText = "Scanning active. Hold QR code in the box.";
+
+            } catch (err) {
+                console.error("Camera startup failed:", err);
+                readerDiv.innerHTML = `<p id="scanner-message" class="text-center text-sm p-4 text-red-500 dark:text-red-400">Camera Error: ${err.message}. Please use manual entry below.</p>`;
+                if (stopBtn) stopBtn.classList.add('hidden');
+            }
+        }
+        window.startScanner = startScanner;
 
         /**
          * Handles the student check-in form submission
@@ -1627,18 +1824,18 @@
                 // 1. Find the registration
                 const { data: registration, error: regError } = await supabase
                     .from('registrations')
-                    .select('id, student_name, is_present')
+                    .select('id, student_name, is_present, nic')
                     .eq('exam_id', checkInExamId)
-                    .eq('index_number', indexNumber)
+                    .or(`index_number.eq.${indexNumber},nic.eq.${indexNumber}`) // Check by Index OR NIC
                     .single();
                 
                 if (regError || !registration) {
-                    throw new Error('Index Number not registered for this exam.');
+                    throw new Error('Index/NIC not found or invalid for this exam.');
                 }
 
                 // 2. Check if already present
                 if (registration.is_present) {
-                    statusDiv.innerHTML = `&#9888; ${registration.student_name} (Index: ${indexNumber}) is **already checked in** for this exam.`;
+                    statusDiv.innerHTML = `&#9888; ${registration.student_name} (Index: ${registration.index_number}) is **already checked in** for this exam.`;
                     statusDiv.className = 'mt-6 p-4 rounded-lg text-center font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
                     statusDiv.classList.remove('hidden');
                     return;
@@ -1652,7 +1849,7 @@
 
                 if (updateError) throw updateError;
                 
-                statusDiv.innerHTML = `&#9989; Check-in Successful! **${registration.student_name}** (Index: ${indexNumber}) is marked as **Present**.`;
+                statusDiv.innerHTML = `&#9989; Check-in Successful! **${registration.student_name}** (Index: ${registration.index_number}) is marked as **Present**.`;
                 statusDiv.className = 'mt-6 p-4 rounded-lg text-center font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
                 statusDiv.classList.remove('hidden');
                 document.getElementById('check_in_index_number').value = ''; // Clear input for next scan
@@ -1781,7 +1978,8 @@
                         <td class="p-3">${student.marks !== null ? student.marks : 'N/A'}</td>
                         <td class="p-3"><span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${attendanceClass}">${attendanceStatus}</span></td>
                         <td class="p-3"><span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${statusClass}">${status}</span></td>
-                        <td class="p-3 flex gap-2 flex-wrap"> <button onclick="editMark('${student.index_number}')" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit Mark</button>
+                        <td class="p-3 flex gap-2 flex-wrap"> <!-- Added flex-wrap -->
+                            <button onclick="editMark('${student.index_number}')" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit Mark</button>
                             ${student.result_id ? `<button onclick="handleDeleteMark(${student.result_id})" class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md shadow-sm">Delete Mark</button>` : ''}
                         </td>
                     </tr>
@@ -1986,7 +2184,8 @@
                         <td class="p-3">${student.nic}</td>
                         <td classD="p-3">${student.email || 'N/A'}</td>
                         <td class="p-3">${student.phone || 'N/A'}</td>
-                        <td class="p-3 flex gap-2 flex-wrap"> <button onclick="openEditStudentModal(${student.id})" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit</button>
+                        <td class="p-3 flex gap-2 flex-wrap"> <!-- Added flex-wrap -->
+                            <button onclick="openEditStudentModal(${student.id})" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit</button>
                             <button onclick="handleDeleteRegistration(${student.id})" class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md shadow-sm">Delete</button>
                         </td>
                     </tr>
@@ -2208,124 +2407,119 @@
         
         // --- Leaderboards (Public & Admin) ---
 
-        // --- Leaderboards (Public & Admin) ---
+        /**
+         * Shows the leaderboard (Top 10 or All)
+         * @param {string} type - 'top10' or 'all'
+         * @param {string} context - 'public' or 'admin'
+         */
+        async function handleViewLeaderboard(type, context) {
+            let examId;
+            if (context === 'public') {
+                examId = document.getElementById('result-exam-select').value;
+            } else {
+                examId = document.getElementById('rank-exam-select-admin').value;
+            }
+            
+            if (!examId) {
+                showMessage('Please select an exam first.', 'error');
+                return;
+            }
+            
+            // Fetch exam details to check published status and get name
+            let exam = currentExamData[examId];
+            if (!exam) {
+                const { data: fetchedExam, error } = await supabase.from('exams').select('name, batch_year, is_published').eq('id', examId).single();
+                if (error || !fetchedExam) {
+                    showMessage('Could not find exam details.', 'error');
+                    return;
+                }
+                exam = fetchedExam;
+                currentExamData[examId] = exam;
+            }
 
-/**
- * Shows the leaderboard (Top 10 or All)
- * @param {string} type - 'top10' or 'all'
- * @param {string} context - 'public' or 'admin'
- */
-async function handleViewLeaderboard(type, context) {
-    let examId;
-    if (context === 'public') {
-        examId = document.getElementById('result-exam-select').value;
-    } else {
-        examId = document.getElementById('rank-exam-select-admin').value;
-    }
-    
-    if (!examId) {
-        showMessage('Please select an exam first.', 'error');
-        return;
-    }
-    
-    // Fetch exam details to check published status and get name
-    let exam = currentExamData[examId];
-    if (!exam) {
-        const { data: fetchedExam, error } = await supabase.from('exams').select('name, batch_year, is_published').eq('id', examId).single();
-        if (error || !fetchedExam) {
-            showMessage('Could not find exam details.', 'error');
-            return;
+            // Check if published
+            if (context === 'public' && !exam.is_published) {
+                showMessage('The results for this exam have not been published yet.', 'error');
+                return;
+            }
+            
+            const examName = `${exam.name} (${exam.batch_year})`;
+            
+            const modal = document.getElementById('leaderboard-modal');
+            const title = document.getElementById('leaderboard-title');
+            const content = document.getElementById('leaderboard-content');
+            
+            title.innerText = `${type === 'top10' ? 'Top 10' : 'Full'} Leaderboard - ${examName}`;
+            content.innerHTML = '<p class="text-gray-600 dark:text-gray-400">Loading ranks...</p>';
+            modal.classList.add('active');
+            
+            try {
+                let query = supabase
+                    .from('results')
+                    .select(`
+                        marks,
+                        rank,
+                        registrations:registrations!inner (
+                            student_name,
+                            exam_id 
+                        )
+                    `)
+                    .not('rank', 'is', null) // Only select students with a calculated rank
+                    .filter('registrations.exam_id', 'eq', examId) // FIX APPLIED
+                    .order('rank', { ascending: true })
+                    .order('marks', { ascending: false });
+                
+                if (type === 'top10') {
+                    query = query.limit(10);
+                }
+                
+                const { data: results, error } = await query;
+                
+                if (error) throw error;
+                
+                if (results.length === 0) {
+                    content.innerHTML = '<p class="text-gray-600 dark:text-gray-400">No ranked results found for this exam. Ensure results are published.</p>';
+                    return;
+                }
+                
+                let tableHTML = `
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="p-3 font-semibold">Rank</th>
+                                <th class="p-3 font-semibold">Name</th>
+                                <th class="p-3 font-semibold">Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                results.forEach(res => {
+                    const studentName = res.registrations ? res.registrations.student_name : 'Unknown Student';
+                    tableHTML += `
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="p-3 font-bold">${res.rank}</td>
+                            <td class="p-3">${studentName}</td>
+                            <td class="p-3">${res.marks}%</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `</tbody></table>`;
+                content.innerHTML = tableHTML;
+                
+                // Set up PDF download button
+                document.getElementById('download-leaderboard-pdf').onclick = () => {
+                    downloadLeaderboardPDF(examName, type, results);
+                };
+
+            } catch (error) {
+                console.error('Leaderboard error:', error.message);
+                showMessage('Error loading leaderboard: ' + error.message, 'error');
+                content.innerHTML = '<p class="text-red-500">Error loading data.</p>';
+            }
         }
-        exam = fetchedExam;
-        currentExamData[examId] = exam;
-    }
-
-    // Check if published
-    if (context === 'public' && !exam.is_published) {
-        showMessage('The results for this exam have not been published yet.', 'error');
-        return;
-    }
-    
-    const examName = `${exam.name} (${exam.batch_year})`;
-    
-    const modal = document.getElementById('leaderboard-modal');
-    const title = document.getElementById('leaderboard-title');
-    const content = document.getElementById('leaderboard-content');
-    
-    title.innerText = `${type === 'top10' ? 'Top 10' : 'Full'} Leaderboard - ${examName}`;
-    content.innerHTML = '<p class="text-gray-600 dark:text-gray-400">Loading ranks...</p>';
-    modal.classList.add('active');
-    
-    try {
-        let query = supabase
-            .from('results')
-            .select(`
-                marks,
-                rank,
-                registrations:registrations!inner (
-                    student_name,
-                    exam_id 
-                )
-            `)
-            .not('rank', 'is', null) // Only select students with a calculated rank
-            // THE CRITICAL FIX IS HERE: Filter registrations based on exam_id
-            .filter('registrations.exam_id', 'eq', examId) // <--- FIX APPLIED
-            .order('rank', { ascending: true })
-            .order('marks', { ascending: false });
-        
-        if (type === 'top10') {
-            query = query.limit(10);
-        }
-        
-        const { data: results, error } = await query;
-        
-        if (error) throw error;
-        
-        if (results.length === 0) {
-            content.innerHTML = '<p class="text-gray-600 dark:text-gray-400">No ranked results found for this exam. Ensure results are published.</p>';
-            return;
-        }
-        
-        // ... (rest of the display logic is the same)
-        let tableHTML = `
-            <table class="w-full text-left">
-                <thead class="bg-gray-100 dark:bg-gray-700">
-                    <tr>
-                        <th class="p-3 font-semibold">Rank</th>
-                        <th class="p-3 font-semibold">Name</th>
-                        <th class="p-3 font-semibold">Marks</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-        
-        results.forEach(res => {
-            const studentName = res.registrations ? res.registrations.student_name : 'Unknown Student';
-            tableHTML += `
-                <tr class="border-b dark:border-gray-700">
-                    <td class="p-3 font-bold">${res.rank}</td>
-                    <td class="p-3">${studentName}</td>
-                    <td class="p-3">${res.marks}%</td>
-                </tr>
-            `;
-        });
-        
-        tableHTML += `</tbody></table>`;
-        content.innerHTML = tableHTML;
-        
-        // Set up PDF download button
-        document.getElementById('download-leaderboard-pdf').onclick = () => {
-            downloadLeaderboardPDF(examName, type, results);
-        };
-
-    } catch (error) {
-        showMessage('Error loading leaderboard: ' + error.message, 'error');
-        content.innerHTML = '<p class="text-red-500">Error loading data.</p>';
-    }
-}
-window.handleViewLeaderboard = handleViewLeaderboard;
-
-// ... (rest of the file)
+        window.handleViewLeaderboard = handleViewLeaderboard;
 
         function closeLeaderboardModal() {
             document.getElementById('leaderboard-modal').classList.remove('active');
@@ -2399,7 +2593,7 @@ window.handleViewLeaderboard = handleViewLeaderboard;
             document.getElementById('add-mark-form').addEventListener('submit', handleAddMarkSubmit);
             document.getElementById('check-result-form').addEventListener('submit', handleCheckResultSubmit);
             document.getElementById('edit-student-form').addEventListener('submit', handleUpdateStudentSubmit);
-            document.getElementById('check-in-form').addEventListener('submit', handleCheckIn); // NEW: Check-in form
+            document.getElementById('check-in-form').addEventListener('submit', handleCheckIn); 
 
             
             // Handle absent checkbox logic
