@@ -1194,9 +1194,9 @@
                 
                 if (countError) throw countError;
                 
-                // Generate a unique, sequential index number (e.g., DE-1-1001)
-                const nextId = (count || 0) + 1001; // Start from 1001
-                const indexNumber = `DE-${examId}-${nextId}`;
+                // Generate a unique, sequential index number 
+                const nextId = (count || 0) + 10111; // Start from 100112
+                const indexNumber = `25${examId}${nextId}`;
                 
                 // 3. Insert new registration
                 const { data: newRegistration, error: insertError } = await supabase
