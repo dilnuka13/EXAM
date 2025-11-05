@@ -25,7 +25,7 @@
         
         /* Custom gradient for header */
         .header-gradient {
-            background: linear-gradient(to right, #1e3a8a, #3b82f6); /* Dark Blue to Blue */
+            background: linear-gradient(to right, #3f59a2, #3b82f6); /* Dark Blue to Blue */
         }
 
         /* Custom card shadow and hover effect */
@@ -212,7 +212,6 @@
         <!-- ===== Home Page (index.html) ===== -->
         <div id="page-home" class="page active">
             
-            
             <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-8 text-center">Upcoming Exams & Registration</h2>
             
             <!-- Exam Search Bar -->
@@ -222,15 +221,16 @@
                        class="w-full px-5 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
                        placeholder="Search by exam name or batch (e.g., 2025 A/L)...">
             </div>
-<!-- Welcome Message -->
+
+            <!-- Welcome Message -->
             <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg mb-8" role="alert">
                 <p class="font-bold">Welcome to DE Education!</p>
                 <p>We are delighted to have you. You can register for upcoming exams or check your results using the navigation above.</p>
             </div>
-<br>
+            <br>
             <div id="exams-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 <!-- Loading Skeleton -->
-                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:grid-cols-3">
+                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:col-span-3">
                     <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
                     <div class="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-3"></div>
                     <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full mb-3"></div>
@@ -844,7 +844,7 @@
         async function loadExams() {
             const container = document.getElementById('exams-container');
             container.innerHTML = `
-                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:grid-cols-3">
+                <div class="skeleton-card p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg animate-pulse col-span-1 md:col-span-2 lg:col-span-3">
                     <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
                     <div class="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-3"></div>
                     <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full mb-3"></div>
@@ -1062,8 +1062,7 @@
                 
                 // Generate a unique, sequential index number (e.g., de11001)
                 const nextId = (count || 0) + 1001; // Start from 1001
-                // FIX: Removed stray backslash
-                const indexNumber = `de${examId}${nextId}`; // New format: e.g., de11001
+                const indexNumber = `de${examId}${nextId}`;
                 
                 // 3. Insert new registration
                 const { data: newRegistration, error: insertError } = await supabase
@@ -1089,7 +1088,6 @@
 
             } catch (error) {
                 console.error('Registration error:', error.message);
-                // FIX: Removed stray backslash
                 showMessage(`Registration failed: ${error.message}`, 'error');
             } finally {
                 submitBtn.disabled = false;
@@ -1613,7 +1611,18 @@
                 if (error) throw error;
                 
                 showMessage('Mark deleted successfully!', 'success');
-                loadStudentsForMarking(document.getElementById('mark-exam-select').value); // Refresh list
+                // Efficient local update instead of full reload
+                const index = currentMarkData.findIndex(s => s.result_id === resultId);
+                if (index > -1) {
+                    currentMarkData[index].result_id = null;
+                    currentMarkData[index].marks = null;
+                    currentMarkData[index].is_absent = false;
+                    renderStudentMarkList(); // Re-render from local data
+                } else {
+                    // Fallback to reload if local data is out of sync
+                    loadStudentsForMarking(document.getElementById('mark-exam-select').value);
+                }
+
             } catch (error) {
                 showMessage('Error deleting mark: ' + error.message, 'error');
             }
@@ -1650,9 +1659,16 @@
             const formData = new FormData(form);
             const markData = Object.fromEntries(formData.entries());
             
-            const examId = document.getElementById('mark-exam-select').value;
-            if (!examId) {
-                showMessage('Please select an exam first.', 'error');
+            const examIdStr = document.getElementById('mark-exam-select').value;
+            // FIX: Validate that an exam is selected *before* parsing
+            if (!examIdStr) {
+                showMessage('Please select a valid exam before adding a mark.', 'error');
+                return;
+            }
+            
+            const examId = parseInt(examIdStr);
+            if (isNaN(examId)) {
+                showMessage('The selected exam ID is invalid. Please refresh.', 'error');
                 return;
             }
             
@@ -1674,36 +1690,42 @@
                 
                 const registrationId = registration.id;
                 
-                // 2. Check if a result entry already exists
-                const { data: existingResult, error: checkError } = await supabase
-                    .from('results')
-                    .select('id')
-                    .eq('registration_id', registrationId)
-                    .single();
-
-                if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows found
-                    throw checkError;
-                }
+                // 2. Check if a result entry already exists (in local data first)
+                const localStudent = currentMarkData.find(s => s.reg_id === registrationId);
+                const existingResultId = localStudent ? localStudent.result_id : null;
                 
                 // 3. Upsert (Insert or Update) the result
-                const { error: upsertError } = await supabase
+                // FIX: Added .select().single() to get the updated data back
+                const { data: updatedResult, error: upsertError } = await supabase
                     .from('results')
                     .upsert({
-                        id: existingResult ? existingResult.id : undefined, // Provide ID for update
-                        exam_id: parseInt(examId), // <-- FIX: Ensure exam_id is an integer
+                        id: existingResultId ? existingResultId : undefined, // Provide ID for update
+                        exam_id: examId, // This is the fix for the NOT NULL violation
                         registration_id: registrationId,
                         marks: marks,
                         is_absent: isAbsent,
                         rank: null // Rank will be set on publish
                     }, {
                         onConflict: 'registration_id' // Unique constraint on registration_id
-                    });
+                    })
+                    .select()
+                    .single();
                 
                 if (upsertError) throw upsertError;
                 
                 showMessage('Mark added/updated successfully!', 'success');
                 form.reset();
-                loadStudentsForMarking(examId); // Refresh the list
+                
+                // FIX: Efficient local UI update
+                // Find and update the student in the local 'currentMarkData' array
+                const indexToUpdate = currentMarkData.findIndex(s => s.reg_id === registrationId);
+                if (indexToUpdate > -1) {
+                    currentMarkData[indexToUpdate].result_id = updatedResult.id;
+                    currentMarkData[indexToUpdate].marks = updatedResult.marks;
+                    currentMarkData[indexToUpdate].is_absent = updatedResult.is_absent;
+                }
+                // Re-render the list from local data
+                renderStudentMarkList();
                 
             } catch (error) {
                 console.error('Error adding mark:', error.message);
@@ -1788,7 +1810,7 @@
                         <td class="p-3">${student.student_name}</td>
                         <td class="p-3">${student.index_number}</td>
                         <td class="p-3">${student.nic}</td>
-                        <td classD="p-3">${student.email || 'N/A'}</td>
+                        <td class="p-3">${student.email || 'N/A'}</td>
                         <td class="p-3">${student.phone || 'N/A'}</td>
                         <td class="p-3 flex gap-2 flex-wrap"> <!-- Added flex-wrap -->
                             <button onclick="openEditStudentModal(${student.id})" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md shadow-sm">Edit</button>
@@ -1905,7 +1927,6 @@
          */
         async function loadPublishedExams() {
             try {
-                // FIX: Removed the underscore
                 const { data, error } = await supabase
                     .from('exams')
                     .select('id, name, batch_year')
@@ -2073,7 +2094,7 @@
                     `)
                     .eq('exam_id', examId)
                     .eq('is_absent', false) // Only show present students
-                    .order('rank', { ascending: true })
+                    .order('rank', { ascending: true, nullsFirst: false }) // Ranks at top
                     .order('marks', { ascending: false });
                 
                 if (type === 'top10') {
@@ -2086,6 +2107,17 @@
                 
                 if (results.length === 0) {
                     content.innerHTML = '<p class="text-gray-600 dark:text-gray-400">No results are published for this exam yet.</p>';
+                    return;
+                }
+
+                // Check if the first student has a null rank (i.e., not published)
+                if (results[0].rank === null) {
+                    content.innerHTML = `
+                        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                            <p class="font-bold">Pending</p>
+                            <p>Ranks have not been calculated for this exam yet. Please go to "Manage Exams" and click "Publish".</p>
+                        </div>
+                    `;
                     return;
                 }
                 
@@ -2103,7 +2135,7 @@
                 
                 results.forEach(res => {
                     // Check if registrations data is present
-                    const studentName = res.registrations ? res.registrations.student_name : 'Unknown Student';
+                    const studentName = res.registrations ? res.registATIONS.student_name : 'Unknown Student';
                     tableHTML += `
                         <tr class="border-b dark:border-gray-700">
                             <td class="p-3 font-bold">${res.rank}</td>
